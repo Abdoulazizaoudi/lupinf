@@ -1,3 +1,5 @@
+
+   
 import streamlit as st
 import numpy as np
 
@@ -9,6 +11,7 @@ with st.sidebar:
     st.header("Paramètres du Patient")
     eular = st.number_input("Score EULAR_ACR_2019", min_value=0, max_value=100, value=10)
     anti_ssb = st.selectbox("Anti-SSB", ["Positif", "Négatif"])
+    anti_sm = st.selectbox("Anti-Sm", ["Positif", "Négatif"])
     vaccin = st.selectbox("Vaccin Pneumocoque", ["Non", "Oui"])
 
 # Coefficients du modèle issus de R
@@ -16,18 +19,21 @@ COEFFICIENTS = {
     "intercept": -3.77041,
     "eular": 0.12574,
     "anti_ssb_positif": 2.00572,
+    "anti_sm_positif": 0.82450,
     "vaccin_non": 3.99037
 }
 
 # Fonction de calcul de la probabilité
-def calculate_probability(eular, anti_ssb, vaccin):
+def calculate_probability(eular, anti_ssb, anti_sm, vaccin):
     anti_ssb_num = 1 if anti_ssb == "Positif" else 0
+    anti_sm_num = 1 if anti_sm == "Positif" else 0
     vaccin_num = 1 if vaccin == "Non" else 0
 
     logit = (
         COEFFICIENTS["intercept"]
         + COEFFICIENTS["eular"] * eular
         + COEFFICIENTS["anti_ssb_positif"] * anti_ssb_num
+        + COEFFICIENTS["anti_sm_positif"] * anti_sm_num
         + COEFFICIENTS["vaccin_non"] * vaccin_num
     )
 
@@ -36,7 +42,7 @@ def calculate_probability(eular, anti_ssb, vaccin):
 
 # Bouton de prédiction
 if st.button("Prédire"):
-    prob = calculate_probability(eular, anti_ssb, vaccin)
+    prob = calculate_probability(eular, anti_ssb, anti_sm, vaccin)
     st.success(f"**Probabilité d'infection :** {prob * 100:.1f}%")
 
     # Interprétation simple selon seuil de 0.455
@@ -53,5 +59,6 @@ st.markdown("""
 2. Cliquez sur *Prédire*.
 3. La probabilité estimée d'infection et une interprétation s'afficheront ci-dessus.
 
-*Basé sur un modèle de régression logistique validé (AUC = 0,886). Données issues de la thèse de Doctorat en Médecine Générale réalisée par ODODI Timothée Preston Bradley. Contact : +237 657 691 776 *
+*Basé sur un modèle de régression logistique validé (AUC = 0.886).Basé sur un modèle de régression logistique validé (AUC = 0,886). Données issues de la thèse de Doctorat en Médecine Générale réalisée par ODODI Timothée Preston Bradley. Contact : +237 657 691 776*
 """)
+
