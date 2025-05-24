@@ -53,5 +53,5 @@ st.markdown("""
 2. Cliquez sur *Prédire*.
 3. La probabilité estimée d'infection et une interprétation s'afficheront ci-dessus.
 
-*Basé sur un modèle de régression logistique validé (AUC = 0.886). these doctorat en medecine generale par ODOI TIMOTHEE PRESTON BRADLEY/+237657691776 *
+*Basé sur un modèle de régression logistique validé (AUC = 0,886). Données issues de la thèse de Doctorat en Médecine Générale réalisée par ODODI Timothée Preston Bradley. Contact : +237 657 691 776 *
 """)
